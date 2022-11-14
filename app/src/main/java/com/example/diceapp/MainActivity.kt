@@ -1,8 +1,12 @@
 package com.example.diceapp
 
+import android.animation.TimeInterpolator
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.BounceInterpolator
+import android.view.animation.LinearInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,6 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: DiceViewModel
+    private var isRunning: Boolean = false
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,11 +28,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //View Model Initialisation
-        viewModel =  ViewModelProvider(this)[DiceViewModel::class.java]
+        viewModel = ViewModelProvider(this)[DiceViewModel::class.java]
         val random: MutableLiveData<Int> = viewModel.getRolls()
 
         //Observer
-        random.observe(this,Observer{
+        random.observe(this, Observer {
             binding.txtView.text = "Dice :${it}"
             val imgDice = when (it.toString().toInt()) {
                 1 -> R.drawable.dice_1
@@ -42,23 +47,29 @@ class MainActivity : AppCompatActivity() {
 
             //animation
             binding.imgDice.animate().apply {
+                isRunning = true
                 duration = 500
                 rotationXBy(3600f)
                 scaleX(2f)
-                translationY(-50f)
             }.withEndAction {
                 binding.imgDice.animate().apply {
                     duration = 500
-                    rotationYBy(360f)
                     scaleX(1f)
-                    translationY(50f)
+                    rotationYBy(180f)
+
                 }
+                isRunning = false
             }.start()
+
         })
 
         binding.btnRoll.setOnClickListener {
-            viewModel.getRandomRolls()
-            Log.i(TAG, viewModel.getRandomRolls().toString())
+            if (isRunning) {
+                //Block the View.
+            } else {
+                viewModel.getRandomRolls()
+                Log.i(TAG, viewModel.getRandomRolls().toString())
+            }
         }
     }
 
