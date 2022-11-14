@@ -1,20 +1,14 @@
 package com.example.diceapp
 
-import android.animation.TimeInterpolator
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.BounceInterpolator
-import android.view.animation.LinearInterpolator
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.diceapp.databinding.ActivityMainBinding
 
-@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -56,7 +50,6 @@ class MainActivity : AppCompatActivity() {
                     duration = 500
                     scaleX(1f)
                     rotationYBy(180f)
-
                 }
                 isRunning = false
             }.start()
@@ -68,7 +61,6 @@ class MainActivity : AppCompatActivity() {
                 //Block the View.
             } else {
                 viewModel.getRandomRolls()
-                Log.i(TAG, viewModel.getRandomRolls().toString())
             }
         }
     }
