@@ -1,2 +1,2 @@
 # DiceRoll
-A sample demonstration of LiveData and animation
+A sample demonstration of LiveData and Tween animation
